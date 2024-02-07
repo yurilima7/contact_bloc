@@ -13,6 +13,16 @@ class BlocExample extends StatelessWidget {
       ),
 
       body: BlocListener<ExampleBloc, ExampleState>(
+        listenWhen: (previous, current) {
+          if (previous is ExampleStateInitial && current is ExampleStateData) {
+            if (current.names.length > 3) {
+              return true;
+            }
+          }
+
+          return false;
+        },
+
         listener: (context, state) {
           if (state is ExampleStateData) {  
               ScaffoldMessenger.of(context).showSnackBar(
@@ -26,6 +36,16 @@ class BlocExample extends StatelessWidget {
         child: Column(
           children: [
             BlocConsumer<ExampleBloc, ExampleState>(
+              buildWhen: (previous, current) {
+                if (previous is ExampleStateInitial && current is ExampleStateData) {
+                  if (current.names.length > 3) {
+                    return true;
+                  }
+                }
+
+                return false;
+              },
+
               listener: (context, state) {
                 debugPrint('Estado alterado para ${state.runtimeType}');
               },
@@ -73,10 +93,27 @@ class BlocExample extends StatelessWidget {
               builder: (context, names) => ListView.builder(
                 shrinkWrap: true,
                 itemCount: names.length,
+
                 itemBuilder: (context, index) => ListTile(
+                  onTap: () {
+                    context.read<ExampleBloc>().add(
+                          ExampleRemoveNameEvent(name: names[index]),
+                        );
+                  },
+
                   title: Text(names[index]),
                 ),
               ),
+            ),
+
+            ElevatedButton.icon(
+              onPressed: () {
+                context.read<ExampleBloc>().add(
+                      ExampleAddNameEvent(name: 'Noelle Maria'),
+                    );
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Adicionar nome'),
             ),
 
             // BlocBuilder<ExampleBloc, ExampleState>(builder: (context, state) {
