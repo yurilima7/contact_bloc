@@ -15,6 +15,7 @@ class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
     ExampleFindNameEvent event,
     Emitter<ExampleState> emit,
   ) async {
+    await Future.delayed(const Duration(seconds: 4));
     final names = ['Lima', 'Yuri', 'José', 'Maria'];
     emit(ExampleStateData(names: names));
   }
