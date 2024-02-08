@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const List<String> routes = [
       '/bloc/example',
-      '/bloc/example',
+      '/bloc/example/freezed',
       '/bloc/example',
       '/bloc/example',
     ];
