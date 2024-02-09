@@ -1,0 +1,46 @@
+import 'package:contact_bloc/features/contacts/list/bloc/contact_list_bloc.dart';
+import 'package:contact_bloc/models/contact_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class ContactsListPage extends StatelessWidget {
+  const ContactsListPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Contact List'),
+      ),
+      body: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            child: Column(
+              children: [
+                BlocSelector<ContactListBloc, ContactListState,
+                    List<ContactModel>>(
+                  selector: (state) {
+                    return state.maybeWhen(
+                      data: (contacts) => contacts,
+                      orElse: () => [],
+                    );
+                  },
+
+                  builder: (_, contacts) => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: contacts.length,
+
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(contacts[index].name),
+                      subtitle: Text(contacts[index].email),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

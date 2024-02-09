@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
     const List<String> routes = [
       '/bloc/example',
       '/bloc/example/freezed',
-      '/bloc/example',
+      '/contacts/list',
       '/bloc/example',
     ];
 
