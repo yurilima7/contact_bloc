@@ -14,6 +14,13 @@ class ContactsListPage extends StatelessWidget {
         title: const Text('Contact List'),
       ),
 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/contacts/register');
+        },
+        child: const Icon(Icons.add),
+      ),
+
       body: BlocListener<ContactListBloc, ContactListState>(
         listenWhen: (previous, current) => current.maybeWhen(
           error: (error) => true,
@@ -34,42 +41,47 @@ class ContactsListPage extends StatelessWidget {
           );
         },
 
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              child: Column(
-                children: [
-                  Loader<ContactListBloc, ContactListState>(
-                    selector: (state) =>
-                      state.maybeWhen(
-                      loading: () => true,
-                      orElse: () => false,
-                    ),
-                  ),
+        child: RefreshIndicator(
+          onRefresh: () async => context.read<ContactListBloc>()..add(const ContactListEvent.findAll()),
 
-                  BlocSelector<ContactListBloc, ContactListState,
-                      List<ContactModel>>(
-                    selector: (state) {
-                      return state.maybeWhen(
-                        data: (contacts) => contacts,
-                        orElse: () => [],
-                      );
-                    },
-
-                    builder: (_, contacts) => ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: contacts.length,
-
-                      itemBuilder: (context, index) => ListTile(
-                        title: Text(contacts[index].name),
-                        subtitle: Text(contacts[index].email),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                child: Column(
+                  children: [
+                    Loader<ContactListBloc, ContactListState>(
+                      selector: (state) =>
+                        state.maybeWhen(
+                        loading: () => true,
+                        orElse: () => false,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+          
+                    BlocSelector<ContactListBloc, ContactListState,
+                        List<ContactModel>>(
+                      selector: (state) {
+                        return state.maybeWhen(
+                          data: (contacts) => contacts,
+                          orElse: () => [],
+                        );
+                      },
+          
+                      builder: (_, contacts) => ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: contacts.length,
+          
+                        itemBuilder: (context, index) => ListTile(
+                          onTap: () => Navigator.pushNamed(context, '/contacts/update'),
+                          title: Text(contacts[index].name),
+                          subtitle: Text(contacts[index].email),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
