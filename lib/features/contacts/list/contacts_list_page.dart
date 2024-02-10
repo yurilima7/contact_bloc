@@ -73,7 +73,15 @@ class ContactsListPage extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
           
                         itemBuilder: (context, index) => ListTile(
-                          onTap: () => Navigator.pushNamed(context, '/contacts/update'),
+                          onTap: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/contacts/update',
+                              arguments: contacts[index],
+                            );
+
+                            context.read<ContactListBloc>().add(const ContactListEvent.findAll());
+                          },
                           title: Text(contacts[index].name),
                           subtitle: Text(contacts[index].email),
                         ),

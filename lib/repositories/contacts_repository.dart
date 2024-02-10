@@ -2,7 +2,7 @@ import 'package:contact_bloc/models/contact_model.dart';
 import 'package:dio/dio.dart';
 
 class ContactsRepository {
-  final link = 'https://1bf2-45-231-15-210.ngrok-free.app/contacts';
+  final link = 'https://b1ea-45-231-15-210.ngrok-free.app/contacts';
 
   Future<List<ContactModel>> findAll() async {
     final response = await Dio().get(link);
