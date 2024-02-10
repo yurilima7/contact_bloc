@@ -14,6 +14,15 @@ class ContactsListCubitPage extends StatelessWidget {
         title: const Text('Contact Cubit'),
       ),
 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.of(context).pushNamed('/contacts/cubit/register');
+          context.read<ContactListCubit>().findAll();
+        },
+        child: const Icon(Icons.add),
+      ),
+
+
       body: RefreshIndicator(
         onRefresh: () => context.read<ContactListCubit>().findAll(),
 
@@ -48,6 +57,17 @@ class ContactsListCubitPage extends StatelessWidget {
                         final contact = contacts[index];
         
                         return ListTile(
+                          onTap: () async {
+                            await Navigator.pushNamed(
+                              context,
+                              '/contacts/cubit/update',
+                              arguments: contacts[index],
+                            );
+                            
+                            context
+                                .read<ContactListCubit>().findAll();
+                          },
+
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
