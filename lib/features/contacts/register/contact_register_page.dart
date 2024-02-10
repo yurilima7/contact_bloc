@@ -1,4 +1,4 @@
-import 'package:contact_bloc/features/contacts/register/contact_register_bloc.dart';
+import 'package:contact_bloc/features/contacts/register/bloc/contact_register_bloc.dart';
 import 'package:contact_bloc/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
