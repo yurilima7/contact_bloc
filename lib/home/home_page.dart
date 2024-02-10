@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
       '/bloc/example',
       '/bloc/example/freezed',
       '/contacts/list',
-      '/bloc/example',
+      '/contacts/cubit/list',
     ];
 
     const List<String> titles = [
