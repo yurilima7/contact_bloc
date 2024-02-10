@@ -80,9 +80,28 @@ class ContactsListPage extends StatelessWidget {
                               arguments: contacts[index],
                             );
 
-                            context.read<ContactListBloc>().add(const ContactListEvent.findAll());
+                            context
+                                .read<ContactListBloc>()
+                                .add(const ContactListEvent.findAll());
                           },
-                          title: Text(contacts[index].name),
+                          
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                            children: [
+                              Text(contacts[index].name),
+                              IconButton(
+                                onPressed: () => context
+                                    .read<ContactListBloc>()
+                                    .add(ContactListEvent.delete(
+                                        contact: contacts[index])),
+                                        
+                                icon: const Icon(Icons.delete),
+                                visualDensity: VisualDensity.compact,
+                              ),
+                            ],
+                          ),
+
                           subtitle: Text(contacts[index].email),
                         ),
                       ),
