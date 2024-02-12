@@ -10,24 +10,21 @@ class MockContactsRepository extends Mock implements ContactsRepository {}
 void main() {
   late ContactsRepository repository;
   late ContactRegisterCubit cubit;
-  late List<ContactModel> contacts;
 
   setUp(() {
     repository = MockContactsRepository();
     cubit = ContactRegisterCubit(contactsRepository: repository);
-    contacts = [
-      ContactModel(name: 'Lima', email: 'lima@gmail.com'),
-      ContactModel(name: 'Lima Pessoal', email: 'lima2@gmail.com'),
-    ];
   });
   
+  final model = ContactModel(name: 'James', email: 'James@gmail.com');
+
   blocTest<ContactRegisterCubit, ContactRegisterCubitState>(
     'Deve buscar os contatos',
     build: () => cubit,
-    act: (cubit) => cubit.register(ContactModel(name: 'James', email: 'James@gmail.com')),
+    act: (cubit) => cubit.register(model),
 
     setUp: () {
-      when(() => repository.create(ContactModel(name: 'James', email: 'James@gmail.com'))).thenAnswer((_) async => Future<void> );
+      when(() => repository.create(model)).thenAnswer((_) async => Future<void>);
     },
     
     expect: () => [

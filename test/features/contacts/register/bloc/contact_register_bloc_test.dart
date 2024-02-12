@@ -10,27 +10,26 @@ class MockContactsRepository extends Mock implements ContactsRepository {}
 void main() {
   late ContactsRepository contactsRepository;
   late ContactRegisterBloc bloc;
-  late List<ContactModel> contacts;
 
   setUp(() {
     contactsRepository = MockContactsRepository();
     bloc = ContactRegisterBloc(contactsRepository: contactsRepository);
-    contacts = [
-      ContactModel(name: 'Lima', email: 'lima@gmail.com'),
-      ContactModel(name: 'Lima Pessoal', email: 'lima2@gmail.com'),
-    ];
   });
+
+  final model = ContactModel(name: 'James', email: 'James@gmail.com');
 
   blocTest<ContactRegisterBloc, ContactRegisterState>(
     'Deve inserir novo contato',
     build: () => bloc,
-    act: (bloc) => bloc.add(const ContactRegisterEvent.save(name: 'James', email: 'James@gmail.com',)),
+    act: (bloc) => bloc.add(
+      ContactRegisterEvent.save(
+        name: model.name,
+        email: model.email,
+      ),
+    ),
 
     setUp: () {
-      when(
-        () => contactsRepository
-            .create(any()),
-      ).thenAnswer((_) async {});
+      when(() => contactsRepository.create(model)).thenAnswer((_) async => Future<void>);
     },
 
     expect: () => [
